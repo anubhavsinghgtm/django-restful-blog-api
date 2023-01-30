@@ -1,1 +1,1 @@
-"## Django Blog restful api" 
+## Django Blog restful api
