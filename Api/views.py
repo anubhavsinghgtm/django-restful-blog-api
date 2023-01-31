@@ -1,7 +1,17 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from rest_framework import generics
+from Base.models import BlogPost
+from .serializers import BlogPostSerializer
 
-# Create your views here.
-def home(request):
-    return HttpResponse('<h2>Home Page</h2>')
 
+class PostList(generics.ListCreateAPIView):
+    queryset = BlogPost.postObject.all()
+    serializer_class = BlogPostSerializer
+    pass
+
+
+
+
+class PostDetail(generics.RetrieveDestroyAPIView):
+    queryset = BlogPost.postObject.all()
+    serializer_class = BlogPostSerializer
+    pass
