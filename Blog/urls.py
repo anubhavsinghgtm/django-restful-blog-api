@@ -6,4 +6,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('Base.urls')),
     path('api/', include('Api.urls')),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
