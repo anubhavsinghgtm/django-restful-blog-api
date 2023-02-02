@@ -16,7 +16,7 @@ SECRET_KEY = secret.secret_key
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -31,8 +31,11 @@ INSTALLED_APPS = [
     
     'Base.apps.BaseConfig',
     'Api.apps.ApiConfig',
+    'Account.apps.AccountConfig',
+
     
     'rest_framework',
+    'rest_framework.authtoken',
     'corsheaders',
 
 ]
@@ -133,6 +136,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ]
 }
 
