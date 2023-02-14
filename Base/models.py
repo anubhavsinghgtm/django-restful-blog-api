@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.text import slugify
 from django.contrib.auth.models import User
+from Blog.settings import AUTH_USER_MODEL as UserModel
 
 
 ###########################################
@@ -43,15 +44,15 @@ class BlogPost(models.Model):
         
     title = models.CharField(max_length=255)
     body = models.TextField()
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(UserModel, on_delete=models.CASCADE, limit_choices_to={'is_superuser': True})
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    categories = models.ManyToManyField(Category, blank=True, null=True)
+    categories = models.ManyToManyField(Category, blank=True)
     published = models.BooleanField(default=False)
-    slug = models.SlugField(unique=True, max_length=255,default='a')
+    slug = models.SlugField(unique=True, max_length=255)
     featured_image = models.ImageField(upload_to='BlogImages/', blank=True, null=True)
     meta_description = models.CharField(max_length=500)
-    tags = models.ManyToManyField(Tag, blank=True, null=True)
+    tags = models.ManyToManyField(Tag, blank=True)
 
     objects = models.Manager()                # default manager
     postObject = BlogPostObjects()            # custom manager
@@ -68,10 +69,7 @@ class BlogPost(models.Model):
 
     ##### to generate the unique slug
     def generate_unique_slug(self):
-        if(self.slug != 'a'):
-            original_slug = self.slug
-        else:
-            original_slug = slugify(self.title)
+        original_slug = slugify(self.title)
         unique_slug = original_slug
         num = 1
         while BlogPost.objects.filter(slug=unique_slug).exists():
